@@ -1,6 +1,6 @@
 import {
   collection,
-  getDocs,
+  // getDocs,
   limit,
   onSnapshot,
   orderBy,
@@ -25,18 +25,26 @@ const Wrapper = styled.div`
   display: flex;
   gap: 10px;
   flex-direction: column;
+  overflow-y: scroll;
 `;
 
 export default function Timeline() {
   const [tweets, setTweet] = useState<ITweet[]>([]);
 
+  const handleScroll = (e) => {
+    const target = e.target;
+    const bottomPos = target.clientHeight + target.scrollTop;
+    if (target.scrollHeight <= bottomPos) {
+      console.log("scroll end");
+    }
+  }
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
     const fetchTweets = async () => {
       const tweetsQuery = query(
         collection(db, "tweets"),
         orderBy("createdAt", "desc"),
-        limit(25)
+        limit(10)
       );
       /* const spanshot = await getDocs(tweetsQuery);
         const tweets = spanshot.docs.map((doc) => {
@@ -73,7 +81,7 @@ export default function Timeline() {
     };
   }, []);
   return (
-    <Wrapper>
+    <Wrapper onScroll={handleScroll}>
       {tweets.map((tweet) => (
         <Tweet key={tweet.id} {...tweet} />
       ))}
