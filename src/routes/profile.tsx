@@ -52,10 +52,77 @@ const Tweets = styled.div`
   gap: 10px;
 `;
 
+const EditButton = styled.button`
+  background-color: orange;
+  color: white;
+  font-weight: 600;
+  border: 0;
+  font-size: 12px;
+  padding: 5px 10px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const TextArea = styled.textarea`
+  margin: 10px;
+  border: 2px solid white;
+  padding: 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  color: white;
+  background-color: black;
+  width: 100%;
+  resize: none;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  &::placeholder {
+    font-size: 16px;
+  }
+  &:focus {
+    outline: none;
+    border-color: #1d9bf0;
+  }
+`;
+
 export default function Profile() {
   const user = auth.currentUser;
+  // const [isLoading, setLoading] = useState(false);
+  const [editting, setEditting] = useState(false);
+  const [dispName, setDispName] = useState(user?.displayName ? user.displayName : 'Anonymous');
   const [avatar, setAvatar] = useState(user?.photoURL);
   const [tweets, setTweets] = useState<ITweet[]>([]);
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDispName(e.target.value);
+  };
+  const onUpdate = async () => {
+    try {
+      if (editting === true) {
+        if (!user) return;
+        // setLoading(true);
+        await updateProfile(user, {
+          displayName: dispName,
+        });
+      }
+      setEditting(!editting);
+      // if (photo) {
+      //   const photoRef = ref(storage, `tweets/${user.uid}/${id}`);
+      //   await deleteObject(photoRef);
+      // }
+    } catch (e) {
+      console.log(e);
+    } finally {
+      //
+      setDispName(dispName);
+      // setLoading(false);
+    }
+  };
   const onAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     if (!user) return;
@@ -116,7 +183,22 @@ export default function Profile() {
         type="file"
         accept="image/*"
       />
-      <Name>{user?.displayName ?? "Anonymous"}</Name>
+      {/* <Name>{user?.displayName ?? "Anonymous"}</Name> */}
+      {editting === true ? (
+          <Form onSubmit={onUpdate}>
+          <TextArea
+            required
+            rows={5}
+            maxLength={180}
+            onChange={onChange}
+            value={dispName}
+            placeholder="What is happening?!"
+          />
+        </Form>
+        ) : <Name>{dispName}</Name>}
+      <EditButton onClick={onUpdate}>
+        {editting === true ? 'Apply' : 'Edit'}
+      </EditButton>
       <Tweets>
         {tweets.map((tweet) => (
           <Tweet key={tweet.id} {...tweet} />

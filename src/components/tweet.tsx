@@ -97,19 +97,19 @@ const TextArea = styled.textarea`
 //   cursor: pointer;
 // `;
 
-const SubmitBtn = styled.input`
-  background-color: #1d9bf0;
-  color: white;
-  border: none;
-  padding: 10px 0px;
-  border-radius: 20px;
-  font-size: 16px;
-  cursor: pointer;
-  &:hover,
-  &:active {
-    opacity: 0.9;
-  }
-`;
+// const SubmitBtn = styled.input`
+//   background-color: #1d9bf0;
+//   color: white;
+//   border: none;
+//   padding: 10px 0px;
+//   border-radius: 20px;
+//   font-size: 16px;
+//   cursor: pointer;
+//   &:hover,
+//   &:active {
+//     opacity: 0.9;
+//   }
+// `;
 
 export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
   const user = auth.currentUser;
