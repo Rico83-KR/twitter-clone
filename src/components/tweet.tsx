@@ -177,7 +177,7 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
             value={isLoading ? "Posting..." : "Change Tweet"}
           /> */}
         </Form>
-        ) : <Payload>{tweet}</Payload>}
+        ) : <Payload>{tweetIn}</Payload>}
       
         {user?.uid === userId ? (
           <>
