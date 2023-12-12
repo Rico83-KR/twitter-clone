@@ -13,21 +13,21 @@ import { db } from "../firebase";
 import Tweet from "./tweet";
 import { Unsubscribe } from "firebase/auth";
 
-const Button = styled.span`
-  margin-top: 50px;
-  background-color: white;
-  font-weight: 500;
-  width: 100%;
-  color: black;
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: 0;
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
+// const Button = styled.span`
+//   margin-top: 50px;
+//   background-color: white;
+//   font-weight: 500;
+//   width: 100%;
+//   color: black;
+//   padding: 10px 20px;
+//   border-radius: 50px;
+//   border: 0;
+//   display: flex;
+//   gap: 5px;
+//   align-items: center;
+//   justify-content: center;
+//   cursor: pointer;
+// `;
 
 export interface ITweet {
   id: string;
@@ -58,7 +58,7 @@ export default function Timeline() {
 
     const spanshot = await getDocs(tweetsQuery);
     const tweetsCopy = Array.from(tweets);
-    const tweetsAfter = spanshot.docs.map((doc) => {
+    spanshot.docs.map((doc) => {
       const { tweet, createdAt, userId, username, photo } = doc.data();
       tweetsCopy.push({
         tweet: tweet,
@@ -78,7 +78,6 @@ export default function Timeline() {
       };
     });
 
-    // tweets.push(tweetsAfter);
     setTweet(tweetsCopy)
   }
 
